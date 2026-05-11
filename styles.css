@@ -1,0 +1,291 @@
+/* ============ NATURE TO NEON · DESIGN SYSTEM ============ */
+
+:root {
+  /* Nature palette — warm canyon */
+  --sand: #f5ecdd;
+  --sand-deep: #e9dcc2;
+  --clay: #c5673b;
+  --canyon: #a8451e;
+  --hoodoo: #8b3211;
+  --rock: #2a1810;
+  --ink: #1a0e08;
+
+  /* Twilight transition */
+  --dusk-violet: #6b2d6e;
+  --magenta: #c91d72;
+  --rose-neon: #ff3d8a;
+
+  /* Neon palette — Vegas */
+  --neon-pink: #ff2e93;
+  --neon-magenta: #d916b8;
+  --neon-cyan: #14f0e1;
+  --neon-violet: #8b5cf6;
+  --neon-amber: #ffb800;
+  --vegas-night: #0a0418;
+  --vegas-deep: #050010;
+
+  /* Surface */
+  --paper: #fbf6ec;
+  --paper-warm: #f3e9d3;
+
+  /* Type */
+  --f-display: "Big Shoulders Display", "Anton", system-ui, sans-serif;
+  --f-editorial: "Instrument Serif", "Times New Roman", serif;
+  --f-body: "Inter Tight", "Inter", -apple-system, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--f-body);
+  background: var(--ink);
+  color: var(--sand);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+/* ============ SCROLL-DRIVEN BACKGROUND ============ */
+.scene-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  transition: background 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.scene-bg--nature {
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(168, 69, 30, 0.4), transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 50, 17, 0.5), transparent 55%),
+    linear-gradient(180deg, #1a0e08 0%, #2a1810 60%, #3d1a0a 100%);
+}
+.scene-bg--zion {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(201, 29, 114, 0.25), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(168, 69, 30, 0.35), transparent 55%),
+    linear-gradient(180deg, #2a1810 0%, #4a1a3a 50%, #6b2d6e 100%);
+}
+.scene-bg--vegas {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 46, 147, 0.35), transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(217, 22, 184, 0.3), transparent 55%),
+    radial-gradient(ellipse at 50% 90%, rgba(139, 92, 246, 0.3), transparent 60%),
+    linear-gradient(180deg, #0a0418 0%, #050010 100%);
+}
+
+/* ============ TYPOGRAPHY UTILITIES ============ */
+.display {
+  font-family: var(--f-display);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.editorial {
+  font-family: var(--f-editorial);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.editorial-italic {
+  font-family: var(--f-editorial);
+  font-style: italic;
+  font-weight: 400;
+}
+.mono {
+  font-family: var(--f-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+.eyebrow {
+  font-family: var(--f-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* ============ HUNTER SURPRISE BANNER (fixed top, always visible) ============ */
+.surprise-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: linear-gradient(90deg, var(--hoodoo), var(--magenta), var(--neon-pink));
+  color: white;
+  padding: 8px 24px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+.surprise-banner span { animation: pulse 2s ease-in-out infinite; display: inline-block; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+/* ============ NAV ============ */
+.nav {
+  position: fixed;
+  top: 36px;
+  left: 0; right: 0;
+  z-index: 90;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: rgba(10, 4, 24, 0.4);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(245, 236, 221, 0.08);
+}
+.nav__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.nav__brand-mark {
+  font-family: var(--f-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, var(--clay), var(--neon-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.nav__brand-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.nav__sections {
+  display: flex;
+  gap: 2px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+@media (max-width: 1280px) { .nav__sections { display: none; } }
+.nav__link {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: rgba(245, 236, 221, 0.65);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav__link:hover { color: var(--sand); background: rgba(245, 236, 221, 0.06); }
+.nav__link--active { color: white; background: rgba(255, 255, 255, 0.08); }
+
+/* ============ AUDIENCE SWITCHER ============ */
+.audience {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 236, 221, 0.1);
+}
+.audience__btn {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: rgba(245, 236, 221, 0.55);
+  transition: all 0.25s;
+  position: relative;
+}
+.audience__btn--active {
+  background: linear-gradient(90deg, var(--canyon), var(--neon-pink));
+  color: white;
+  box-shadow: 0 4px 20px rgba(255, 46, 147, 0.3);
+}
+
+/* ============ SECTION SCAFFOLD ============ */
+.section {
+  position: relative;
+  min-height: 100vh;
+  padding: 120px 48px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.section--tight { min-height: auto; padding: 100px 48px; }
+
+.section__label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  opacity: 0.7;
+}
+.section__label::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+.section__label span {
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ============ CARD / TILE BASE ============ */
+.card {
+  background: rgba(245, 236, 221, 0.04);
+  border: 1px solid rgba(245, 236, 221, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
+}
+
+/* ============ PHOTO PLACEHOLDER ============ */
+.photo {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--rock), var(--hoodoo));
+}
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+.photo:hover img { transform: scale(1.04); }
+.photo__caption {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  right: 20px;
+  z-index: 1;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: white;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .section { padding: 100px 20px 60px; }
+  .nav { padding: 12px 16px; gap: 10px; }
+  .nav__sections { display: none; }
+}
