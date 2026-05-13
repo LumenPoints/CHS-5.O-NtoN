@@ -100,9 +100,10 @@ const DAYS = [
       { time: "9:00 AM",  text: "Roll out toward Vegas · cover story in motion · ~2.5 hr drive + 15-min gas stop", kind: "drive" },
       { time: "12:00 PM", text: "Arrive The STRAT Tower — thrill rides · genuine memory, not just a delay", kind: "decoy" },
       { time: "1:15 PM",  text: "Pull into the Cosmopolitan · valet · friends move to position", kind: "surprise" },
-      { time: "1:25 PM",  text: "💥 ★ THE REVEAL MOMENT ★ — 14 adults + 4 friend-kids appear", kind: "surprise", highlight: true },
-      { time: "1:30 PM",  text: "First hugs · champagne pop · hand him the printed itinerary", kind: "celebrate", highlight: true },
-      { time: "3:00 PM",  text: "Pool cabana at the Cosmo (until 6:00 PM)", kind: "pool" },
+      { time: "1:30 PM",  text: "Cosmo check-in · drop bags · cover line: 'pool before the airport'", kind: "stay" },
+      { time: "3:00 PM",  text: "💥 ★ THE REVEAL ★ at the pool cabana — 14 adults + 4 friend-kids", kind: "surprise", highlight: true },
+      { time: "3:05 PM",  text: "First hugs · champagne pop · hand him the printed itinerary", kind: "celebrate", highlight: true },
+      { time: "3:30 PM",  text: "Pool cabana rolls into the afternoon — until 6 PM", kind: "pool" },
       { time: "6:00 PM",  text: "Pre-dinner drinks at Eiffel Tower — 11th floor · Strip views at golden hour", kind: "celebrate", highlight: true },
       { time: "8:00 PM",  text: "Dinner at Mon Ami Gabi — aiming for Le Cabaret semi-private room · Paris Las Vegas", kind: "eat", highlight: true },
     ],
@@ -270,7 +271,7 @@ function SurpriseReveal({ day, audience }) {
           <span className="surprise__title-word">Surprise</span>
         </h2>
         <div className="surprise__moment editorial">
-          <span className="editorial-italic">1:30 PM</span> ·{" "}
+          <span className="editorial-italic">3:00 PM</span> ·{" "}
           Pool Cabana, The Cosmopolitan
         </div>
         <p className="surprise__lede">
@@ -300,20 +301,24 @@ function SurpriseReveal({ day, audience }) {
             <div className="surprise__beat-text">Pull into the Cosmo · valet · text Owen: "WE'RE IN"</div>
           </div>
           <div className="surprise__beat">
-            <div className="surprise__beat-time">1:20 PM</div>
-            <div className="surprise__beat-text">Drop bags · cover line: "let's grab a poolside drink before the airport"</div>
+            <div className="surprise__beat-time">1:30 PM</div>
+            <div className="surprise__beat-text">Cosmo check-in · drop bags · cover line: "let's hit the pool before the airport"</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">2:00 PM</div>
+            <div className="surprise__beat-text">Change into swim · friends + crew move to position at the cabana</div>
           </div>
           <div className="surprise__beat surprise__beat--peak">
-            <div className="surprise__beat-time">1:30 PM</div>
+            <div className="surprise__beat-time">3:00 PM</div>
             <div className="surprise__beat-text">★ THE REVEAL ★ at the pool cabana — 14 adults + 4 friend-kids waiting · photographer rolling 💥</div>
           </div>
           <div className="surprise__beat">
-            <div className="surprise__beat-time">1:35 PM</div>
+            <div className="surprise__beat-time">3:05 PM</div>
             <div className="surprise__beat-text">First hugs · champagne pop · hand him the itinerary · let it sink in</div>
           </div>
           <div className="surprise__beat">
-            <div className="surprise__beat-time">3:00 PM</div>
-            <div className="surprise__beat-text">Pool cabana rolls into the afternoon — until 6 PM</div>
+            <div className="surprise__beat-time">3:30 PM</div>
+            <div className="surprise__beat-text">Cabana rolls into the afternoon — until 6 PM</div>
           </div>
           <div className="surprise__beat">
             <div className="surprise__beat-time">8:00 PM</div>

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crew Logos · Nature to Neon</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Climate+Crisis&family=Anton&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  body { background: #ece6d8; }
+  dc-app { background: #ece6d8; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="crew-logos.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const W = 1500, H = 620;
+
+    /* ========== Apparel adapters · scale primary mark to the print area ========== */
+    function BadgeApparel({ kind }) {
+      // tee chest print — sand on dark, full color
+      if (kind === 'tee') {
+        return <div style={{ width: '100%' }}><BadgeMark fg={C.sand} bg="transparent" accent={C.rose} /></div>;
+      }
+      return <div style={{ width: '100%' }}><BadgeMark fg={C.sand} bg="transparent" accent={C.rose} /></div>;
+    }
+
+    function TourApparelTee() {
+      return <TourMark fg={C.sandLight} accent={C.rose} />;
+    }
+    function TourApparelHat() {
+      // simplified for small hat panel
+      return (
+        <div style={{ color: C.sandLight, textAlign: 'center' }}>
+          <div style={{ fontFamily: 'Instrument Serif, serif', fontStyle: 'italic', fontSize: 22, lineHeight: 1 }}>CHS</div>
+          <div style={{ fontFamily: 'Big Shoulders Display, sans-serif', fontWeight: 900, fontSize: 38, lineHeight: 0.9 }}>5·0</div>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 7, letterSpacing: '0.24em', marginTop: 4, color: C.rose }}>WORLD TOUR</div>
+        </div>
+      );
+    }
+    function TourApparel({ kind }) {
+      return kind === 'tee' ? <TourApparelTee /> : <TourApparelHat />;
+    }
+
+    function AthleticApparel({ kind }) {
+      if (kind === 'tee') return <AthleticMark fg={C.sand} accent={C.rose} />;
+      // hat — just H·5 lockup
+      return (
+        <div style={{ textAlign: 'center', color: C.sand }}>
+          <div style={{
+            fontFamily: 'Anton, Big Shoulders Display, sans-serif',
+            fontWeight: 900, fontSize: 64, lineHeight: 0.8,
+            display: 'inline-flex', alignItems: 'baseline',
+          }}>
+            <span style={{ color: 'transparent', WebkitTextStroke: `2px ${C.sand}`, textShadow: `3px 3px 0 ${C.rose}` }}>H</span>
+            <span style={{ color: C.rose, fontSize: 28, transform: 'translateY(-12px)', display: 'inline-block', margin: '0 2px' }}>·</span>
+            <span style={{ textShadow: `3px 3px 0 ${C.rose}` }}>5.0</span>
+          </div>
+        </div>
+      );
+    }
+
+    function MarqueeApparel({ kind }) {
+      if (kind === 'tee') return <MarqueeMark />;
+      // hat — simpler
+      return (
+        <div style={{
+          border: `1.5px solid ${C.pink}`,
+          borderRadius: 4,
+          padding: '6px 12px',
+          background: 'rgba(255,46,147,0.06)',
+          boxShadow: `0 0 16px rgba(255,46,147,0.5)`,
+          textAlign: 'center', color: '#fff',
+        }}>
+          <div style={{ fontFamily: '"Climate Crisis", "Big Shoulders Display", sans-serif', fontSize: 30, lineHeight: 0.9, textShadow: `0 0 8px rgba(255,46,147,0.9)` }}>HUNTER</div>
+          <div style={{ fontFamily: 'Instrument Serif, serif', fontStyle: 'italic', fontSize: 22, color: C.cyan, lineHeight: 1, textShadow: `0 0 8px rgba(20,240,225,0.6)` }}>5.0</div>
+        </div>
+      );
+    }
+
+    function EditorialApparel({ kind }) {
+      if (kind === 'tee') return <EditorialMark fg={C.cream} accent={C.rose} />;
+      // hat — just "to" word at small scale
+      return (
+        <div style={{ textAlign: 'center', color: C.cream }}>
+          <div style={{ fontFamily: 'Instrument Serif, serif', fontSize: 36, lineHeight: 0.9, letterSpacing: '-0.02em' }}>
+            Nature<br/><em style={{ color: C.rose, fontStyle: 'italic' }}>to</em> Neon
+          </div>
+        </div>
+      );
+    }
+
+    function TrailApparel({ kind }) {
+      return <TrailMark fg={C.cream} accent={C.rose} bg={C.hoodoo} />;
+    }
+
+    /* ========== Layout note + 6 directions ========== */
+    const directions = [
+      {
+        id: 'tour',
+        name: '01 · Tour Tee',
+        blurb: 'Back-print concert tour. The trip\u2019s 9 days framed as tour dates with The Big One starred. Front-chest mini: Hunter 5·0.',
+        bg: '#1a0e08', fg: '#f5ecdd',
+        Primary: () => <TourMark fg={C.sandLight} accent={C.rose} />,
+        Apparel: TourApparel,
+        teeColor: '#1a0e08', hatColor: '#1a0e08',
+        printScales: { tee: 1.6, hat: 1.2 },
+      },
+      {
+        id: 'athletic',
+        name: '02 · Athletic Block',
+        blurb: 'Varsity H·5 block letters with a drop shadow. The big number does the work. Reads from across the canyon.',
+        bg: '#f1e6d0', fg: '#a8451e',
+        Primary: () => <AthleticMark fg={C.canyon} accent={C.rose} />,
+        Apparel: AthleticApparel,
+        teeColor: '#a8451e', hatColor: '#a8451e',
+        printScales: { tee: 1.4, hat: 1.5 },
+      },
+      {
+        id: 'editorial',
+        name: '03 · Editorial Wordmark',
+        blurb: 'The quiet one. Big Instrument Serif lockup. For the partners or anyone allergic to slogans on chests.',
+        bg: '#fbf6ec', fg: '#1a0e08',
+        Primary: () => <EditorialMark fg={C.ink} accent={C.magenta} />,
+        Apparel: EditorialApparel,
+        teeColor: '#1a0e08', hatColor: '#fbf6ec', hatBrim: '#1a0e08',
+        printScales: { tee: 1.5, hat: 1.5 },
+      },
+      {
+        id: 'trail',
+        name: '04 · Trail Stamp',
+        blurb: 'Vintage trail-stamp shield. Mountains, sun, HUNTER over a giant 5·0. Earns its place at the trailhead and the after-party.',
+        bg: '#8b3211', fg: '#fbf6ec',
+        Primary: () => <TrailMark fg={C.cream} accent={C.rose} bg={C.hoodoo} />,
+        Apparel: TrailApparel,
+        teeColor: '#8b3211', hatColor: '#8b3211',
+        printScales: { tee: 1.5, hat: 1.5 },
+      },
+    ];
+
+    function App() {
+      return (
+        <DesignCanvas>
+          <DCSection id="brief" title="Crew Logos · Hunter 5.0" subtitle="Six directions for shirts & hats for the 9-person crew. Each card: primary mark · how it prints on a tee · how it prints on a hat.">
+            {directions.map(d => (
+              <DCArtboard key={d.id} id={d.id} label={d.name + ' — ' + d.blurb}
+                width={W} height={H}>
+                <Direction {...d} />
+              </DCArtboard>
+            ))}
+          </DCSection>
+
+          <DCSection id="palette" title="Palette & usage notes" subtitle="Print-on-demand friendly: each mark works in 1–2 colors, embroiders, and lives on light or dark garments.">
+            <DCArtboard id="palette-swatches" label="Palette · 8 swatches" width={1500} height={240}>
+              <div style={{
+                width: '100%', height: '100%', background: '#fbf6ec', color: '#1a0e08',
+                display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: 11,
+              }}>
+                {[
+                  ['Sand', '#f1e6d0', '#2a1810'],
+                  ['Cream', '#fbf6ec', '#2a1810'],
+                  ['Clay', '#c5673b', '#fbf6ec'],
+                  ['Canyon', '#a8451e', '#fbf6ec'],
+                  ['Hoodoo', '#8b3211', '#fbf6ec'],
+                  ['Ink', '#1a0e08', '#f5ecdd'],
+                  ['Rose Neon', '#ff3d8a', '#1a0e08'],
+                  ['Vegas Night', '#0a0418', '#f5ecdd'],
+                ].map(([n, bg, fg]) => (
+                  <div key={n} style={{ background: bg, color: fg, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 18 }}>
+                    <div style={{ letterSpacing: '0.24em', textTransform: 'uppercase' }}>{n}</div>
+                    <div style={{ letterSpacing: '0.18em' }}>{bg}</div>
+                  </div>
+                ))}
+              </div>
+            </DCArtboard>
+          </DCSection>
+        </DesignCanvas>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

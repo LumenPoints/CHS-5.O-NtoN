@@ -70,35 +70,64 @@ function Route({ audience }) {
         </svg>
       </div>
       <div className="route__legs">
-        <div className="route__leg">
-          <div className="route__leg-num">01</div>
-          <div className="route__leg-from">BNA → LAS</div>
-          <div className="route__leg-mode">Sheldens · Jul 12 · 7:55 AM</div>
+        <div className="route__legs-group">
+          <div className="route__legs-head">
+            <span className="route__legs-phase">Sun · Jul 12</span>
+            <span className="route__legs-sub">Outbound · Nature begins</span>
+          </div>
+          <div className="route__leg">
+            <span className="route__leg-icon">✈</span>
+            <span className="route__leg-route">BNA → LAS</span>
+            <span className="route__leg-who">Sheldens · 7:55 AM</span>
+          </div>
         </div>
-        <div className="route__leg route__leg--fl">
-          <div className="route__leg-num">01b</div>
-          <div className="route__leg-from">FLL → LAS</div>
-          <div className="route__leg-mode">Dannheim crew · Jul 14</div>
+
+        <div className="route__legs-group">
+          <div className="route__legs-head">
+            <span className="route__legs-phase">Tue · Jul 14</span>
+            <span className="route__legs-sub route__legs-sub--fl">Zion arrival</span>
+          </div>
+          <div className="route__leg route__leg--fl">
+            <span className="route__leg-icon">✈</span>
+            <span className="route__leg-route">FLL → LAS</span>
+            <span className="route__leg-who">Dannheim crew</span>
+          </div>
         </div>
-        <div className="route__leg route__leg--fri">
-          <div className="route__leg-num">02</div>
-          <div className="route__leg-from">BNA → LAS</div>
-          <div className="route__leg-mode">TN friends · Jul 17</div>
+
+        <div className="route__legs-group route__legs-group--wide">
+          <div className="route__legs-head">
+            <span className="route__legs-phase">Fri · Jul 17</span>
+            <span className="route__legs-sub route__legs-sub--fri">The Vegas crew converges</span>
+          </div>
+          <div className="route__legs-row">
+            <div className="route__leg route__leg--fri">
+              <span className="route__leg-icon">✈</span>
+              <span className="route__leg-route">BNA → LAS</span>
+              <span className="route__leg-who">TN friends</span>
+            </div>
+            <div className="route__leg route__leg--fri">
+              <span className="route__leg-icon">✈</span>
+              <span className="route__leg-route">TX → LAS</span>
+              <span className="route__leg-who">Sheldens TX</span>
+            </div>
+            <div className="route__leg route__leg--fri">
+              <span className="route__leg-icon">✈</span>
+              <span className="route__leg-route">SLC → LAS</span>
+              <span className="route__leg-who">Erb/Pieczonka · 8:50 AM</span>
+            </div>
+          </div>
         </div>
-        <div className="route__leg route__leg--fri">
-          <div className="route__leg-num">03</div>
-          <div className="route__leg-from">TX → LAS</div>
-          <div className="route__leg-mode">Sheldens TX · Jul 17</div>
-        </div>
-        <div className="route__leg route__leg--fri">
-          <div className="route__leg-num">04</div>
-          <div className="route__leg-from">SLC → LAS</div>
-          <div className="route__leg-mode">Utah crew · Jul 17</div>
-        </div>
-        <div className="route__leg">
-          <div className="route__leg-num">05</div>
-          <div className="route__leg-from">LAS → BNA</div>
-          <div className="route__leg-mode">Flight home · Jul 20 · 1 PM</div>
+
+        <div className="route__legs-group">
+          <div className="route__legs-head">
+            <span className="route__legs-phase">Mon · Jul 20</span>
+            <span className="route__legs-sub">Home</span>
+          </div>
+          <div className="route__leg">
+            <span className="route__leg-icon">✈</span>
+            <span className="route__leg-route">LAS → BNA</span>
+            <span className="route__leg-who">~1:00 PM</span>
+          </div>
         </div>
       </div>
     </section>
@@ -196,6 +225,7 @@ function InfoHub({ audience }) {
       </div>
 
       <Guests audience={audience} />
+      <Logistics audience={audience} />
 
       <div className="info__pack">
         <h3 className="info__col-title">Pack for Nature → Neon</h3>
@@ -297,10 +327,20 @@ function RSVPForm() {
       desc: "Sat Jul 18, 8:30 PM · dinner + immersive experience" },
   ];
 
+  const MEALS = [
+    { id: "monami",  label: "Mon Ami Gabi · Friday dinner",
+      desc: "Fri Jul 17, 8 PM · Paris LV · we're covering" },
+    { id: "henry",   label: "The Henry · Saturday brunch",
+      desc: "Sat Jul 18, 11:30 AM · The Cosmopolitan" },
+    { id: "wicked",  label: "Wicked Spoon · Sunday brunch",
+      desc: "Sun Jul 19, 11:45 AM · Cosmo buffet" },
+  ];
+
   const STORE_KEY = "n2n-rsvp-draft";
   const [name, setName] = useState("");
   const [partySize, setPartySize] = useState(1);
   const [picks, setPicks] = useState({});
+  const [meals, setMeals] = useState({});
   const [notes, setNotes] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
@@ -311,25 +351,31 @@ function RSVPForm() {
         setName(saved.name || "");
         setPartySize(saved.partySize || 1);
         setPicks(saved.picks || {});
+        setMeals(saved.meals || {});
         setNotes(saved.notes || "");
       }
     } catch {}
   }, []);
 
   React.useEffect(() => {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify({ name, partySize, picks, notes })); } catch {}
-  }, [name, partySize, picks, notes]);
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ name, partySize, picks, meals, notes })); } catch {}
+  }, [name, partySize, picks, meals, notes]);
 
   const togglePick = (id) => setPicks(p => ({ ...p, [id]: !p[id] }));
+  const toggleMeal = (id) => setMeals(m => ({ ...m, [id]: !m[id] }));
 
   const buildBody = () => {
     const chosen = OPTIONS.filter(o => picks[o.id]);
+    const mealsChosen = MEALS.filter(m => meals[m.id]);
     const lines = [
       `Name: ${name || "(not provided)"}`,
       `Party size: ${partySize}`,
       "",
       "Counting me in for:",
       ...(chosen.length ? chosen.map(o => `  ✓ ${o.label} — ${o.price}`) : ["  (none)"]),
+      "",
+      "Meals I'll join (so we can book the right headcount):",
+      ...(mealsChosen.length ? mealsChosen.map(m => `  ✓ ${m.label}`) : ["  (none)"]),
       "",
       notes ? `Notes: ${notes}` : "",
     ].filter(Boolean);
@@ -340,12 +386,17 @@ function RSVPForm() {
     e.preventDefault();
     if (!name.trim()) { alert("Please add your name first"); return; }
     const chosen = OPTIONS.filter(o => picks[o.id]).map(o => o.label);
+    const mealsList = MEALS.filter(m => meals[m.id]).map(m => m.label);
     const payload = {
       name, partySize, notes,
       area15:     !!picks.area15,
       helicopter: !!picks.helicopter,
       sphere:     !!picks.sphere,
+      monAmiGabi: !!meals.monami,
+      theHenry:   !!meals.henry,
+      wickedSpoon: !!meals.wicked,
       committed:  chosen.join(" · "),
+      mealsJoining: mealsList.join(" · "),
       _subject:   `[Hunter 5.0 RSVP] ${name}`,
     };
 
@@ -373,7 +424,7 @@ function RSVPForm() {
   };
 
   const reset = () => {
-    setPicks({}); setNotes(""); setStatus("idle");
+    setPicks({}); setMeals({}); setNotes(""); setStatus("idle");
   };
 
   if (status === "sent") {
@@ -408,6 +459,10 @@ function RSVPForm() {
                onChange={e => setPartySize(parseInt(e.target.value) || 1)} />
       </div>
 
+      <div className="rsvp__section-head">
+        <span className="rsvp__section-num">01</span>
+        <span className="rsvp__section-label">Activities · paid add-ons</span>
+      </div>
       <div className="rsvp__opts">
         {OPTIONS.map(o => (
           <label key={o.id} className={`rsvp__opt ${picks[o.id] ? "rsvp__opt--on" : ""}`}>
@@ -423,8 +478,26 @@ function RSVPForm() {
         ))}
       </div>
 
+      <div className="rsvp__section-head">
+        <span className="rsvp__section-num">02</span>
+        <span className="rsvp__section-label">Meal reservations · headcount only</span>
+      </div>
+      <div className="rsvp__opts">
+        {MEALS.map(o => (
+          <label key={o.id} className={`rsvp__opt rsvp__opt--meal ${meals[o.id] ? "rsvp__opt--on" : ""}`}>
+            <input type="checkbox" checked={!!meals[o.id]} onChange={() => toggleMeal(o.id)} />
+            <div className="rsvp__opt-body">
+              <div className="rsvp__opt-row">
+                <span className="rsvp__opt-label">{o.label}</span>
+              </div>
+              <div className="rsvp__opt-desc">{o.desc}</div>
+            </div>
+          </label>
+        ))}
+      </div>
+
       <div className="rsvp__field">
-        <label htmlFor="rsvp-notes">Notes (allergies, kids' ages, anything else)</label>
+        <label htmlFor="rsvp-notes">Notes (allergies, special requests, anything else)</label>
         <textarea id="rsvp-notes" value={notes} rows="2"
                   onChange={e => setNotes(e.target.value)} placeholder="Optional" />
       </div>
@@ -439,6 +512,220 @@ function RSVPForm() {
         Your responses save in this browser as you type. Send when ready.
       </div>
     </form>
+  );
+}
+
+function Logistics({ audience }) {
+  // === EDIT FLIGHT + RSVP DETAILS HERE ===
+  // - Replace "TBD" strings with real times when guests confirm.
+  // - Update `inFor` arrays as RSVPs come in:
+  //     "helicopter" · "sphere" · "area15"  (any combination)
+  //   Anything still "TBD" shows a yellow pill so you can spot what's missing.
+  const groups = [
+    {
+      key: "shelden",
+      name: "Shelden Family",
+      sub: "2 adults + 3 kids (20·15·15) · the inner circle",
+      visible: ["family", "zion", "vegas"],
+      arrival:   { route: "BNA → LAS", date: "Sun Jul 12", time: "9:50 AM" },
+      departure: { route: "LAS → BNA", date: "Mon Jul 20", time: "~1:00 PM" },
+      hotels: [
+        { range: "Jul 12 – 14", name: "Clear Sky Resorts · Bryce" },
+        { range: "Jul 14 – 17", name: "Open Sky Resort · Zion" },
+        { range: "Jul 17 – 20", name: "The Cosmopolitan · Las Vegas" },
+      ],
+      inFor: ["helicopter", "sphere", "area15"],
+    },
+    {
+      key: "dannheim",
+      name: "Dannheim Family",
+      sub: "2 adults + 2 kids (18·15) · joining at Zion",
+      visible: ["family", "zion", "vegas"],
+      arrival:   { route: "FLL → LAS", date: "Tue Jul 14", time: "TBD",
+                   note: "Then drive LAS → Zion (~2.5 hrs) — arrive Open Sky ~3 PM" },
+      departure: { route: "LAS → FLL", date: "TBD", time: "TBD" },
+      hotels: [
+        { range: "Jul 14 – 17", name: "Open Sky Resort · Zion" },
+        { range: "Jul 17 – 20", name: "The Cosmopolitan · Las Vegas" },
+      ],
+      inFor: ["helicopter"],
+      inForNote: "Helicopter covered as our gift",
+    },
+    {
+      key: "jarreau",
+      name: "B. Jarreau",
+      sub: "1 adult · Vegas only",
+      visible: ["family", "vegas"],
+      arrival:   { route: "→ LAS", date: "Fri Jul 17", time: "TBD" },
+      departure: { route: "LAS →", date: "TBD", time: "TBD" },
+      hotels: [{ range: "Jul 17 – TBD", name: "The Cosmopolitan · Las Vegas" }],
+      inFor: ["TBD"],
+    },
+    {
+      key: "kruger",
+      name: "J. Kruger",
+      sub: "1 adult · Vegas only",
+      visible: ["family", "vegas"],
+      arrival:   { route: "→ LAS", date: "Fri Jul 17", time: "TBD" },
+      departure: { route: "LAS →", date: "TBD", time: "TBD" },
+      hotels: [{ range: "Jul 17 – TBD", name: "The Cosmopolitan · Las Vegas" }],
+      inFor: ["TBD"],
+    },
+    {
+      key: "shelden-tx",
+      name: "Shelden TX",
+      sub: "2 adults · Vegas only",
+      visible: ["family", "vegas"],
+      arrival:   { route: "TX → LAS", date: "Fri Jul 17", time: "TBD" },
+      departure: { route: "LAS → TX", date: "TBD", time: "TBD" },
+      hotels: [{ range: "Jul 17 – TBD", name: "The Cosmopolitan · Las Vegas" }],
+      inFor: ["TBD"],
+    },
+    {
+      key: "elliott",
+      name: "Elliott",
+      sub: "2 adults · Vegas only",
+      visible: ["family", "vegas"],
+      arrival:   { route: "→ LAS", date: "Fri Jul 17", time: "TBD" },
+      departure: { route: "LAS →", date: "TBD", time: "TBD" },
+      hotels: [{ range: "Jul 17 – TBD", name: "TBD" }],
+      inFor: ["TBD"],
+    },
+    {
+      key: "dehombre",
+      name: "DeHombre",
+      sub: "2 adults · Vegas only · staying at the Venetian",
+      visible: ["family", "vegas"],
+      arrival:   { route: "→ LAS", date: "Fri Jul 17", time: "TBD" },
+      departure: { route: "LAS →", date: "TBD", time: "TBD" },
+      hotels: [{ range: "Jul 17 – TBD", name: "The Venetian · Las Vegas" }],
+      inFor: ["TBD"],
+    },
+    {
+      key: "erb",
+      name: "Erb / Pieczonka",
+      sub: "2 adults · Vegas only · flying in from SLC",
+      visible: ["family", "vegas"],
+      arrival:   { route: "SLC → LAS", date: "Fri Jul 17", time: "8:50 AM" },
+      departure: { route: "LAS → SLC", date: "Sun Jul 19", time: "7:55 PM" },
+      hotels: [{ range: "Jul 17 – 19", name: "The Cosmopolitan · Las Vegas" }],
+      inFor: ["TBD"],
+    },
+  ];
+
+  const visible = groups.filter(g => g.visible.includes(audience));
+  const missingCount = visible.reduce((n, g) => {
+    let m = 0;
+    if (g.arrival.time === "TBD") m++;
+    if (g.arrival.date === "TBD") m++;
+    if (g.departure.time === "TBD") m++;
+    if (g.departure.date === "TBD") m++;
+    g.hotels.forEach(h => { if (h.name === "TBD" || h.range.includes("TBD")) m++; });
+    if (g.inFor.includes("TBD")) m++;
+    return n + m;
+  }, 0);
+
+  const headline = audience === "vegas"
+    ? "Vegas Crew · Arrivals · Hotels · RSVPs"
+    : audience === "zion"
+      ? "Zion + Vegas · Arrivals · Hotels · RSVPs"
+      : "Arrivals · Departures · Hotels · RSVPs";
+
+  return (
+    <div className="logistics">
+      <div className="logistics__head">
+        <h3 className="info__col-title">{headline}</h3>
+        {missingCount > 0 && (
+          <div className="logistics__missing">
+            {missingCount} detail{missingCount === 1 ? "" : "s"} still to fill in
+          </div>
+        )}
+      </div>
+      <div className="logistics__grid">
+        {visible.map(g => <LogisticsCard key={g.key} g={g} />)}
+      </div>
+    </div>
+  );
+}
+
+const RSVP_LABELS = {
+  helicopter: { label: "Helicopter", color: "cyan" },
+  sphere:     { label: "Sphere · Oz", color: "violet" },
+  area15:     { label: "AREA15", color: "pink" },
+};
+
+function LogisticsCard({ g }) {
+  const TBD = ({ children }) =>
+    children === "TBD"
+      ? <span className="logi__tbd">TBD</span>
+      : <span>{children}</span>;
+
+  const hasRsvp = g.inFor && g.inFor.length && !(g.inFor.length === 1 && g.inFor[0] === "TBD") && !(g.inFor.length === 1 && g.inFor[0] === "none");
+  const isNone = g.inFor && g.inFor.length === 1 && g.inFor[0] === "none";
+  const isTbd  = g.inFor && g.inFor.length === 1 && g.inFor[0] === "TBD";
+
+  return (
+    <div className="logi-card">
+      <div className="logi-card__head">
+        <div className="logi-card__name">{g.name}</div>
+        <div className="logi-card__sub">{g.sub}</div>
+      </div>
+
+      <div className="logi-card__leg">
+        <div className="logi-card__leg-label">
+          <span className="logi-card__leg-icon">✈</span> Arrival
+        </div>
+        <div className="logi-card__route">{g.arrival.route}</div>
+        <div className="logi-card__details">
+          <TBD>{g.arrival.date}</TBD> · <TBD>{g.arrival.time}</TBD>
+        </div>
+        {g.arrival.note && <div className="logi-card__note">{g.arrival.note}</div>}
+      </div>
+
+      <div className="logi-card__leg">
+        <div className="logi-card__leg-label">
+          <span className="logi-card__leg-icon">✈</span> Departure
+        </div>
+        <div className="logi-card__route">{g.departure.route}</div>
+        <div className="logi-card__details">
+          <TBD>{g.departure.date}</TBD> · <TBD>{g.departure.time}</TBD>
+        </div>
+      </div>
+
+      <div className="logi-card__hotels">
+        <div className="logi-card__leg-label">
+          <span className="logi-card__leg-icon">⌂</span> Where they sleep
+        </div>
+        {g.hotels.map((h, i) => (
+          <div key={i} className="logi-card__hotel">
+            <span className="logi-card__hotel-range">
+              <TBD>{h.range}</TBD>
+            </span>
+            <span className="logi-card__hotel-name">
+              <TBD>{h.name}</TBD>
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="logi-card__rsvp">
+        <div className="logi-card__leg-label">
+          <span className="logi-card__leg-icon">✦</span> Counting them in for
+        </div>
+        {hasRsvp && (
+          <div className="logi-card__chips">
+            {g.inFor.map(k => RSVP_LABELS[k] && (
+              <span key={k} className={`logi-chip logi-chip--${RSVP_LABELS[k].color}`}>
+                ✓ {RSVP_LABELS[k].label}
+              </span>
+            ))}
+          </div>
+        )}
+        {isTbd  && <div className="logi-card__details"><span className="logi__tbd">Awaiting RSVP</span></div>}
+        {isNone && <div className="logi-card__details" style={{opacity: 0.6}}>None — just here for the party</div>}
+        {g.inForNote && <div className="logi-card__note">{g.inForNote}</div>}
+      </div>
+    </div>
   );
 }
 
