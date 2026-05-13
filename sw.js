@@ -1,9 +1,18 @@
-// Minimal service worker — installs the itinerary for offline use on phones
-const CACHE = "n2n-v1";
+// Service worker — network-first so deploys always show up.
+// Falls back to cache only when offline.
+const CACHE = "n2n-v4";
 const ASSETS = [
   "./",
   "./index.html",
   "./Nature to Neon.html",
+  "./photos/bryce-hike.jpg",
+  "./photos/zion-sign.jpg",
+  "./photos/zion-ebike.jpg",
+  "./photos/zion-petroglyph.jpg",
+  "./photos/vegas-paris.jpg",
+  "./photos/vegas-sphere.jpg",
+  "./photos/vegas-helicopter.jpg",
+  "./photos/vegas-strip.jpg",
   "./styles.css",
   "./layout.css",
   "./cover.jsx",
@@ -14,20 +23,29 @@ const ASSETS = [
   "./icon-192.png",
   "./icon-512.png",
 ];
+
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {}));
   self.skipWaiting();
 });
+
 self.addEventListener("activate", e => {
-  e.waitUntil(self.clients.claim());
+  // Nuke old caches so a deploy actually replaces stale files.
+  e.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(k => k !== CACHE).map(k => caches.delete(k))
+    )).then(() => self.clients.claim())
+  );
 });
+
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+  // Network-first: always try fresh, fall back to cache on failure.
   e.respondWith(
-    caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
+    fetch(e.request).then(res => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
       return res;
-    }).catch(() => caches.match("./Nature to Neon.html")))
+    }).catch(() => caches.match(e.request).then(hit => hit || caches.match("./index.html")))
   );
 });

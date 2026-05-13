@@ -33,10 +33,13 @@
   <script type="text/babel" src="sections.jsx"></script>
   <script type="text/babel" src="app.jsx"></script>
   <script>
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').catch(() => {});
       });
+    } else if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+      if ('caches' in window) caches.keys().then(ks => ks.forEach(k => caches.delete(k)));
     }
   </script>
 </body>

@@ -2,27 +2,22 @@
 const { useState, useEffect, useMemo } = React;
 
 /* =================== CONSTANTS =================== */
-// Photos: only 3 verified-working Unsplash IDs, distributed across slots.
-// CSS filters in styles.css create visual variety per slot. Real photos
-// can replace these later (the user will swap in their own).
-const _BRYCE = "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=1800&q=80";
-const _CANYON = "https://images.unsplash.com/photo-1551632811-561732d1e306?w=1800&q=80";
-const _VEGAS = "https://images.unsplash.com/photo-1581351721010-8cf859cb14a4?w=1800&q=80";
+// Real photos provided by the user. Mapped 1:1 to days.
 const PHOTOS = {
-  bryceSunrise: _BRYCE,
-  bryceHoodoos: _BRYCE,
-  bryceTrail:   _CANYON,
-  bryceStars:   _BRYCE,
-  zionCanyon:   _CANYON,
-  zionNarrows:  _CANYON,
-  zionEmerald:  _CANYON,
-  zionDrive:    _CANYON,
-  vegasStrip:   _VEGAS,
-  vegasNeon:    _VEGAS,
-  vegasNight:   _VEGAS,
-  vegasPool:    _VEGAS,
-  helicopter:   _VEGAS,
-  sphere:       _VEGAS,
+  bryceSunrise: "photos/bryce-hike.jpg",
+  bryceHoodoos: "photos/bryce-hike.jpg",
+  bryceTrail:   "photos/bryce-hike.jpg",
+  bryceStars:   "photos/bryce-hike.jpg",
+  zionCanyon:   "photos/zion-sign.jpg",
+  zionNarrows:  "photos/zion-petroglyph.jpg",  // Day 5 = canyoneering + Gems of Zion
+  zionEmerald:  "photos/zion-ebike.jpg",       // Day 4 = e-bikes
+  zionDrive:    "photos/zion-sign.jpg",        // Day 3 = arrival
+  vegasStrip:   "photos/vegas-strip.jpg",
+  vegasNeon:    "photos/vegas-paris.jpg",
+  vegasNight:   "photos/vegas-paris.jpg",      // Day 6 = surprise + Eiffel + Mon Ami Gabi
+  vegasPool:    "photos/vegas-strip.jpg",      // Day 9 = departure / strip view
+  helicopter:   "photos/vegas-helicopter.jpg",
+  sphere:       "photos/vegas-sphere.jpg",
 };
 
 const AUDIENCES = {
@@ -166,8 +161,9 @@ function Hero({ audience }) {
         </div>
       </div>
       <div className="hero__scroll-hint">
-        <div className="hero__scroll-line"></div>
         <div className="hero__scroll-text">scroll the journey</div>
+        <div className="hero__scroll-line"></div>
+        <div className="hero__scroll-arrow">▼</div>
       </div>
     </section>
   );

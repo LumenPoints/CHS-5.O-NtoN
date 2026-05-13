@@ -1,17 +1,29 @@
 /* global React, AUDIENCES, PHOTOS */
+const { useState } = React;
+
+// === ORGANIZER CONFIG ===
+// To get RSVPs in your inbox + a dashboard:
+//   1. Sign up free at https://formspree.io → New Form → copy your endpoint URL
+//   2. Paste the URL below (e.g. "https://formspree.io/f/xyzabc123")
+// Until then, the form falls back to a pre-filled email (mailto:) to RSVP_EMAIL.
+const RSVP_EMAIL = "your-email@example.com";
+const RSVP_FORMSPREE = "https://formspree.io/f/mjglzwwb";
+
 
 /* =================== ROUTE / MAP =================== */
-function Route() {
+function Route({ audience }) {
   return (
     <section id="route" className="route">
       <div className="section__label"><span>The Route</span></div>
       <h2 className="route__title display">
-        Nashville to Bryce to Zion to Vegas.<br/>
-        <em className="editorial-italic">Three states. Nine days. One reveal.</em>
+        {audience === "vegas"
+          ? <>Everyone converges on Vegas.<br/>
+              <em className="editorial-italic">Friday, July 17 · The reveal.</em></>
+          : <>Nashville to Bryce to Zion to Vegas.<br/>
+              <em className="editorial-italic">Three states. Nine days. One reveal.</em></>}
       </h2>
       <div className="route__map">
-        <svg viewBox="0 0 1000 380" className="route__svg" preserveAspectRatio="xMidYMid meet">
-          {/* Path from Nashville → Bryce → Zion → Vegas */}
+        <svg viewBox="0 0 1000 420" className="route__svg" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%"  stopColor="#c5673b" />
@@ -19,12 +31,39 @@ function Route() {
               <stop offset="70%" stopColor="#c91d72" />
               <stop offset="100%" stopColor="#ff2e93" />
             </linearGradient>
+            <linearGradient id="routeGradFL" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%"  stopColor="#14b8a6" />
+              <stop offset="60%" stopColor="#0ea5b8" />
+              <stop offset="100%" stopColor="#c91d72" />
+            </linearGradient>
+            <linearGradient id="routeGradFri" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"  stopColor="#a78bfa" />
+              <stop offset="100%" stopColor="#ff2e93" />
+            </linearGradient>
           </defs>
+          {/* Nashville → Vegas → Zion → Bryce (Sheldens, Jul 12) */}
           <path d="M 880 200 Q 700 100 480 140 Q 380 170 340 180 Q 260 200 220 220"
                 stroke="url(#routeGrad)" strokeWidth="3" fill="none"
                 strokeDasharray="6 8" className="route__path" />
+          {/* Ft. Lauderdale → Vegas (Dannheim crew, Jul 14) */}
+          <path d="M 920 340 Q 700 320 480 260 Q 360 240 290 230"
+                stroke="url(#routeGradFL)" strokeWidth="2.5" fill="none"
+                strokeDasharray="4 7" className="route__path route__path--fl" />
+          {/* Friday Vegas Crew arrivals — TN, TX, UT */}
+          <path d="M 880 200 Q 600 260 360 240 Q 290 230 230 225"
+                stroke="url(#routeGradFri)" strokeWidth="2" fill="none"
+                strokeDasharray="3 6" className="route__path route__path--fri" />
+          <path d="M 720 290 Q 540 280 380 260 Q 300 240 230 230"
+                stroke="url(#routeGradFri)" strokeWidth="2" fill="none"
+                strokeDasharray="3 6" className="route__path route__path--fri" />
+          <path d="M 320 80 Q 280 130 240 200 Q 230 215 225 220"
+                stroke="url(#routeGradFri)" strokeWidth="2" fill="none"
+                strokeDasharray="3 6" className="route__path route__path--fri" />
           {/* Pins */}
           <Pin x={880} y={200} label="NASHVILLE" sub="BNA · Jul 12 · 7:55 AM" color="#c5673b" />
+          <Pin x={920} y={340} label="FT. LAUDERDALE" sub="FLL · Jul 14 · Dannheim crew" color="#14b8a6" />
+          <Pin x={720} y={290} label="TEXAS" sub="Jul 17 · Sheldens TX" color="#a78bfa" smallSub />
+          <Pin x={320} y={80}  label="UTAH" sub="SLC · Jul 17 · local crew" color="#a78bfa" smallSub topLabel />
           <Pin x={340} y={180} label="BRYCE CANYON" sub="Jul 12 – 14" color="#a8451e" />
           <Pin x={290} y={205} label="ZION" sub="Jul 14 – 17" color="#c91d72" />
           <Pin x={220} y={220} label="LAS VEGAS" sub="Jul 17 – 20" color="#ff2e93" big />
@@ -34,52 +73,59 @@ function Route() {
         <div className="route__leg">
           <div className="route__leg-num">01</div>
           <div className="route__leg-from">BNA → LAS</div>
-          <div className="route__leg-mode">Flight · 2h 55m</div>
+          <div className="route__leg-mode">Sheldens · Jul 12 · 7:55 AM</div>
         </div>
-        <div className="route__leg">
+        <div className="route__leg route__leg--fl">
+          <div className="route__leg-num">01b</div>
+          <div className="route__leg-from">FLL → LAS</div>
+          <div className="route__leg-mode">Dannheim crew · Jul 14</div>
+        </div>
+        <div className="route__leg route__leg--fri">
           <div className="route__leg-num">02</div>
-          <div className="route__leg-from">LAS → Bryce</div>
-          <div className="route__leg-mode">Drive · ~4 hrs</div>
+          <div className="route__leg-from">BNA → LAS</div>
+          <div className="route__leg-mode">TN friends · Jul 17</div>
         </div>
-        <div className="route__leg">
+        <div className="route__leg route__leg--fri">
           <div className="route__leg-num">03</div>
-          <div className="route__leg-from">Bryce → Zion</div>
-          <div className="route__leg-mode">Drive · ~2 hrs</div>
+          <div className="route__leg-from">TX → LAS</div>
+          <div className="route__leg-mode">Sheldens TX · Jul 17</div>
         </div>
-        <div className="route__leg">
+        <div className="route__leg route__leg--fri">
           <div className="route__leg-num">04</div>
-          <div className="route__leg-from">Zion → LAS</div>
-          <div className="route__leg-mode">Drive · ~2.5 hrs</div>
+          <div className="route__leg-from">SLC → LAS</div>
+          <div className="route__leg-mode">Utah crew · Jul 17</div>
         </div>
         <div className="route__leg">
           <div className="route__leg-num">05</div>
           <div className="route__leg-from">LAS → BNA</div>
-          <div className="route__leg-mode">Flight · Jul 20 · 1 PM</div>
+          <div className="route__leg-mode">Flight home · Jul 20 · 1 PM</div>
         </div>
       </div>
     </section>
   );
 }
 
-function Pin({ x, y, label, sub, color, big }) {
+function Pin({ x, y, label, sub, color, big, smallSub, topLabel }) {
+  const labelYOffset = topLabel ? (big ? 32 : 26) : -(big ? 22 : 18);
+  const subYOffset = topLabel ? -(big ? 18 : 14) : (big ? 26 : 22);
   return (
     <g className="route__pin">
       <circle cx={x} cy={y} r={big ? 9 : 6} fill={color} className="route__pin-dot" />
       {big && <circle cx={x} cy={y} r="14" fill="none" stroke={color} strokeWidth="1.5" opacity="0.5" />}
-      <text x={x} y={y - (big ? 22 : 18)} textAnchor="middle"
-            fill={color} fontSize="11" fontWeight="800" letterSpacing="2">{label}</text>
-      <text x={x} y={y + (big ? 26 : 22)} textAnchor="middle"
-            fill="rgba(245,236,221,0.7)" fontSize="8" letterSpacing="1.5">{sub}</text>
+      <text x={x} y={y + labelYOffset} textAnchor="middle"
+            fill={color} fontSize={big ? 12 : (smallSub ? 9 : 11)} fontWeight="800" letterSpacing="2">{label}</text>
+      <text x={x} y={y + subYOffset} textAnchor="middle"
+            fill="rgba(245,236,221,0.7)" fontSize={smallSub ? 7 : 8} letterSpacing="1.5">{sub}</text>
     </g>
   );
 }
 
 /* =================== HELICOPTER CROWN JEWEL =================== */
-function Helicopter() {
+function Helicopter({ audience }) {
   return (
     <section id="helicopter" className="heli">
       <div className="heli__photo photo">
-        <img src={PHOTOS.helicopter} alt="" loading="lazy" />
+        <img src={PHOTOS.vegasStrip} alt="" loading="lazy" />
       </div>
       <div className="heli__content">
         <div className="heli__badge">✦ Crown Jewel · Booked</div>
@@ -104,10 +150,12 @@ function Helicopter() {
             <div className="heli__stat-label">Timing</div>
             <div className="heli__stat-value">Sunset → twilight</div>
           </div>
-          <div className="heli__stat">
-            <div className="heli__stat-label">Covered</div>
-            <div className="heli__stat-value">Dannheim family (4)</div>
-          </div>
+          {(audience === "family" || audience === "zion") && (
+            <div className="heli__stat">
+              <div className="heli__stat-label">Covered</div>
+              <div className="heli__stat-value">Dannheim family (4)</div>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -133,25 +181,17 @@ function InfoHub({ audience }) {
           <div className="info__items">
             <InfoItem tag="✓ OUR TREAT" label="Pool Cabana · Friday"
               desc="Cosmo pool cabana Friday afternoon — covered for everyone joining us." />
-            <InfoItem tag="✓ OUR TREAT" label="Eiffel Tower Restaurant · Friday"
-              desc="Dinner Friday night — we've got you covered." />
-            <InfoItem tag="✓ OUR TREAT" label="Helicopter · Dannheim Family"
-              desc="Covering the helicopter for the Dannheim family (4 people) — already taken care of." />
+            <InfoItem tag="✓ OUR TREAT" label="Dinner · Friday"
+              desc="Dinner at Mon Ami Gabi (Le Cabaret room) — covered." />
+            {(audience === "family" || audience === "zion") && (
+              <InfoItem tag="✓ OUR TREAT" label="Helicopter · Dannheim Family"
+                desc="Covering the helicopter for the Dannheim family (4 people) — already taken care of." />
+            )}
           </div>
         </div>
         <div className="info__col">
-          <h3 className="info__col-title">Split / Optional</h3>
-          <div className="info__items">
-            <InfoItem tag="÷ SPLIT" label="XS Nightclub · Table"
-              desc="Table charge will be split evenly amongst all guests attending." kind="split" />
-            <InfoItem tag="$ VENMO · OPTIONAL" label="Helicopter · All Others"
-              desc="$300 per person · Let us know if you're in and we'll add you to the booking." kind="venmo" />
-            <InfoItem tag="$ VENMO · OPTIONAL" label="The Sphere · Wizard of Oz"
-              desc="~$175 per ticket · Let us know and we'll secure your seat." kind="venmo" />
-          </div>
-          <div className="info__note">
-            Interested in the helicopter or Sphere? Just let us know and Venmo once we confirm your spot.
-          </div>
+          <h3 className="info__col-title">Opt-in &amp; Split</h3>
+          <RSVPForm />
         </div>
       </div>
 
@@ -176,7 +216,7 @@ function InfoHub({ audience }) {
             <ul>
               <li>Pool day — swim + cover-up</li>
               <li>Eiffel Tower dinner — dressy night</li>
-              <li>Club look for XS</li>
+              <li>Saturday night at AREA15 — something you can move in</li>
               <li>Comfortable shoes for the Strip</li>
               <li>Layers for the helicopter</li>
               <li>Sphere — bring an open mind</li>
@@ -247,6 +287,161 @@ function Guests({ audience }) {
   );
 }
 
+function RSVPForm() {
+  const OPTIONS = [
+    { id: "helicopter", label: "Helicopter · Neon & Nature VIP", price: "$300 / person",
+      desc: "Maverick · Sun Jul 19, 6 PM · Red Rock + Strip flyover at sunset" },
+    { id: "sphere", label: "The Sphere · Wizard of Oz", price: "~$175 / ticket",
+      desc: "Sat Jul 18, 2 PM · most immersive venue on the planet" },
+    { id: "area15", label: "AREA15 · Saturday Dinner + Experience", price: "Split evenly",
+      desc: "Sat Jul 18, 8:30 PM · dinner + immersive experience" },
+  ];
+
+  const STORE_KEY = "n2n-rsvp-draft";
+  const [name, setName] = useState("");
+  const [partySize, setPartySize] = useState(1);
+  const [picks, setPicks] = useState({});
+  const [notes, setNotes] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+
+  React.useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+      if (saved) {
+        setName(saved.name || "");
+        setPartySize(saved.partySize || 1);
+        setPicks(saved.picks || {});
+        setNotes(saved.notes || "");
+      }
+    } catch {}
+  }, []);
+
+  React.useEffect(() => {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ name, partySize, picks, notes })); } catch {}
+  }, [name, partySize, picks, notes]);
+
+  const togglePick = (id) => setPicks(p => ({ ...p, [id]: !p[id] }));
+
+  const buildBody = () => {
+    const chosen = OPTIONS.filter(o => picks[o.id]);
+    const lines = [
+      `Name: ${name || "(not provided)"}`,
+      `Party size: ${partySize}`,
+      "",
+      "Counting me in for:",
+      ...(chosen.length ? chosen.map(o => `  ✓ ${o.label} — ${o.price}`) : ["  (none)"]),
+      "",
+      notes ? `Notes: ${notes}` : "",
+    ].filter(Boolean);
+    return lines.join("\n");
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!name.trim()) { alert("Please add your name first"); return; }
+    const chosen = OPTIONS.filter(o => picks[o.id]).map(o => o.label);
+    const payload = {
+      name, partySize, notes,
+      area15:     !!picks.area15,
+      helicopter: !!picks.helicopter,
+      sphere:     !!picks.sphere,
+      committed:  chosen.join(" · "),
+      _subject:   `[Hunter 5.0 RSVP] ${name}`,
+    };
+
+    if (RSVP_FORMSPREE) {
+      try {
+        setStatus("sending");
+        const res = await fetch(RSVP_FORMSPREE, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("network");
+        setStatus("sent");
+        return;
+      } catch (err) {
+        setStatus("error");
+        // fall through to mailto below
+      }
+    }
+    // Mailto fallback
+    const subject = encodeURIComponent(`Hunter 5.0 RSVP — ${name}`);
+    const body = encodeURIComponent(buildBody());
+    window.location.href = `mailto:${RSVP_EMAIL}?subject=${subject}&body=${body}`;
+    setStatus("sent");
+  };
+
+  const reset = () => {
+    setPicks({}); setNotes(""); setStatus("idle");
+  };
+
+  if (status === "sent") {
+    return (
+      <div className="rsvp rsvp--sent">
+        <div className="rsvp__check">✓</div>
+        <div className="rsvp__sent-title">Got it — thanks, {name.split(" ")[0]}!</div>
+        <div className="rsvp__sent-body">
+          Your selections are on the way. We'll confirm spots and send Venmo details soon.
+        </div>
+        <button type="button" className="rsvp__reset" onClick={reset}>Edit my response</button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="rsvp" onSubmit={submit}>
+      <div className="rsvp__lede">
+        Let us know what you're in for. We'll confirm and send Venmo details after.
+      </div>
+
+      <div className="rsvp__field">
+        <label htmlFor="rsvp-name">Your name</label>
+        <input id="rsvp-name" type="text" value={name}
+               onChange={e => setName(e.target.value)} placeholder="First + last"
+               autoComplete="name" />
+      </div>
+
+      <div className="rsvp__field rsvp__field--narrow">
+        <label htmlFor="rsvp-party"># in your party</label>
+        <input id="rsvp-party" type="number" min="1" max="10" value={partySize}
+               onChange={e => setPartySize(parseInt(e.target.value) || 1)} />
+      </div>
+
+      <div className="rsvp__opts">
+        {OPTIONS.map(o => (
+          <label key={o.id} className={`rsvp__opt ${picks[o.id] ? "rsvp__opt--on" : ""}`}>
+            <input type="checkbox" checked={!!picks[o.id]} onChange={() => togglePick(o.id)} />
+            <div className="rsvp__opt-body">
+              <div className="rsvp__opt-row">
+                <span className="rsvp__opt-label">{o.label}</span>
+                <span className="rsvp__opt-price">{o.price}</span>
+              </div>
+              <div className="rsvp__opt-desc">{o.desc}</div>
+            </div>
+          </label>
+        ))}
+      </div>
+
+      <div className="rsvp__field">
+        <label htmlFor="rsvp-notes">Notes (allergies, kids' ages, anything else)</label>
+        <textarea id="rsvp-notes" value={notes} rows="2"
+                  onChange={e => setNotes(e.target.value)} placeholder="Optional" />
+      </div>
+
+      <button type="submit" className="rsvp__submit" disabled={status === "sending"}>
+        {status === "sending" ? "Sending…" : "Send my RSVP →"}
+      </button>
+      {status === "error" && (
+        <div className="rsvp__error">Couldn't send automatically — opening email as backup.</div>
+      )}
+      <div className="rsvp__fine">
+        Your responses save in this browser as you type. Send when ready.
+      </div>
+    </form>
+  );
+}
+
 function InfoItem({ tag, label, desc, kind }) {
   return (
     <div className={`info-item info-item--${kind || "treat"}`}>
@@ -261,18 +456,21 @@ function InfoItem({ tag, label, desc, kind }) {
 function Reservations({ audience }) {
   const rows = [
     { day: "Sun Jul 12", date: "Jul 12", venue: "Clear Sky Resorts", kind: "stay", note: "Check-in PM · Bryce Canyon", parts: ["family"] },
-    { day: "Tue Jul 14", date: "Jul 14", venue: "Open Sky Resort", kind: "stay", note: "Check-in 12:30 PM · Zion", parts: ["family","zion"] },
+    { day: "Tue Jul 14", date: "2:00 PM", venue: "Open Sky Resort", kind: "stay", note: "Check-in · Zion · tents + swim gear", parts: ["family","zion"] },
+    { day: "Tue Jul 14", date: "Evening", venue: "Spotted Dog Cafe", kind: "dinner", note: "Welcome dinner · Springdale · party of 9 · BOOK ASAP", parts: ["family","zion"] },
     { day: "Wed Jul 15", date: "9:00 AM", venue: "Zion E-Bike Rental", kind: "ride", note: "Rad Runner ×4 · 1101 Zion Park Blvd · until 5 PM", parts: ["family","zion"] },
-    { day: "Wed Jul 15", date: "6:00 PM", venue: "Black Sage", kind: "dinner", note: "🥂 Birthday dinner · Hunter's 50th · Virgin, UT", parts: ["family","zion"], hero: true },
+    { day: "Wed Jul 15", date: "6:00 PM", venue: "Black Sage", kind: "dinner", note: "🥂 Birthday dinner · Hunter's 50th · on-property at Open Sky", parts: ["family","zion"], hero: true },
+    { day: "Thu Jul 16", date: "6:30 PM", venue: "Wild Thyme Cafe", kind: "dinner", note: "Tree's Ranch · online waitlist only · post-hike attire OK", parts: ["family","zion"] },
     { day: "Thu Jul 16", date: "7:00 AM", venue: "Canyoneering Adventure", kind: "hike", note: "Half-day guided · Springdale · 4 people", parts: ["family","zion"], hero: true },
-    { day: "Thu Jul 16", date: "1:30 PM", venue: "Gems of Zion", kind: "view", note: "Canyon Overlook Trailhead + Anasazi Petroglyphs", parts: ["family","zion"] },
+    { day: "Thu Jul 16", date: "1:30 PM", venue: "Gems of Zion", kind: "view", note: "Canyon Overlook + Hidden Swimming Hole · east side", parts: ["family","zion"] },
     { day: "Fri Jul 17", date: "1:30 PM", venue: "The Cosmopolitan", kind: "stay", note: "Check-in · SURPRISE reveal", parts: ["family","zion","vegas"], hero: true },
     { day: "Fri Jul 17", date: "3:00 PM", venue: "Cosmo Pool Cabana", kind: "pool", note: "Until 6 PM · our treat", parts: ["family","zion","vegas"] },
-    { day: "Fri Jul 17", date: "8:00 PM", venue: "Eiffel Tower Restaurant", kind: "dinner", note: "Paris Las Vegas · our treat", parts: ["family","zion","vegas"] },
+    { day: "Fri Jul 17", date: "6:00 PM", venue: "Eiffel Tower · drinks", kind: "night", note: "Pre-dinner drinks + Strip views · 11th floor", parts: ["family","zion","vegas"] },
+    { day: "Fri Jul 17", date: "8:00 PM", venue: "Mon Ami Gabi", kind: "dinner", note: "Le Cabaret semi-private room (aiming) · Paris LV · our treat", parts: ["family","zion","vegas"] },
     { day: "Sat Jul 18", date: "11:30 AM", venue: "The Henry", kind: "brunch", note: "Cosmo · brunch", parts: ["family","zion","vegas"] },
     { day: "Sat Jul 18", date: "2:00 PM", venue: "The Sphere", kind: "show", note: "Wizard of Oz · ~$175 pp", parts: ["family","zion","vegas"] },
-    { day: "Sat Jul 18", date: "8:00 PM", venue: "Beauty & Essex", kind: "dinner", note: "The Cosmopolitan", parts: ["family","zion","vegas"] },
-    { day: "Sat Jul 18", date: "11:30 PM", venue: "XS Nightclub", kind: "night", note: "Odesza DJ set · Encore", parts: ["family","zion","vegas"], hero: true },
+    { day: "Sat Jul 18", date: "6:00 PM", venue: "Chandelier Bar", kind: "night", note: "Pre-night drinks · The Cosmopolitan", parts: ["family","zion","vegas"] },
+    { day: "Sat Jul 18", date: "8:30 PM", venue: "AREA15", kind: "night", note: "Dinner + immersive experience · the crew move", parts: ["family","zion","vegas"], hero: true },
     { day: "Sun Jul 19", date: "11:45 AM", venue: "Wicked Spoon", kind: "brunch", note: "Cosmo buffet", parts: ["family","zion","vegas"] },
     { day: "Sun Jul 19", date: "5:45 PM", venue: "Maverick Helicopters", kind: "fly", note: "Neon & Nature VIP · 6:00–7:45 PM", parts: ["family","zion","vegas"], hero: true },
   ];
@@ -308,21 +506,27 @@ function Moments() {
     { title: "Bryce Canyon Sunrise",
       desc: "Hoodoos glowing in first light — one of the most otherworldly views on the planet.",
       photo: PHOTOS.bryceSunrise, part: "nature" },
-    { title: "The Narrows",
-      desc: "Wading through the Virgin River into a cathedral of ancient slot canyon walls.",
+    { title: "Zion National Park",
+      desc: "Sandstone monoliths, the Virgin River, the gateway to the next chapter.",
+      photo: PHOTOS.zionCanyon, part: "nature" },
+    { title: "E-Bikes Through the Canyon",
+      desc: "Pedal-assist into Zion Canyon — Hunter's birthday, like a local.",
+      photo: PHOTOS.zionEmerald, part: "nature" },
+    { title: "Gems of Zion",
+      desc: "Ancient petroglyphs, the hidden swimming hole, the canyon overlook.",
       photo: PHOTOS.zionNarrows, part: "nature" },
     { title: "The Surprise Arrival",
-      desc: "Vegas ambush at the Cosmopolitan — the moment the whole trip pivots to celebration.",
+      desc: "Paris on the Strip at night — Vegas ambush at the Cosmopolitan.",
       photo: PHOTOS.vegasNight, part: "pivot" },
-    { title: "Eiffel Tower Dinner",
-      desc: "Elevated French dining with Strip views on night one in Vegas.",
-      photo: PHOTOS.vegasStrip, part: "neon" },
+    { title: "Eiffel Tower Drinks",
+      desc: "Pre-dinner cocktails on the 11th floor with the Strip rolled out below.",
+      photo: PHOTOS.vegasNight, part: "neon" },
     { title: "Wizard of Oz · The Sphere",
       desc: "Inside the world's most immersive entertainment venue.",
       photo: PHOTOS.sphere, part: "neon" },
-    { title: "Odesza at XS",
-      desc: "Late-night Odesza DJ set at the iconic XS Nightclub at Encore.",
-      photo: PHOTOS.vegasNeon, part: "neon" },
+    { title: "AREA15 After Dark",
+      desc: "Dinner + immersive experience — weird Vegas at its best, with the whole crew.",
+      photo: PHOTOS.vegasStrip, part: "neon" },
     { title: "Neon & Nature Helicopter",
       desc: "Red Rock Canyon into full Strip flyover at golden hour. Nature meets neon at 1,000 feet.",
       photo: PHOTOS.helicopter, part: "crown" },

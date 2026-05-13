@@ -42,9 +42,9 @@ function App() {
       <main>
         <Hero audience={audience} />
         <Countdown />
-        <Route />
+        <Route audience={audience} />
         <Journey audience={audience} />
-        <Helicopter />
+        <Helicopter audience={audience} />
         <InfoHub audience={audience} />
         <Reservations audience={audience} />
         <Moments />

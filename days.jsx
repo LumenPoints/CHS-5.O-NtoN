@@ -35,45 +35,56 @@ const DAYS = [
   },
   {
     n: 3, dow: "Tuesday", date: "July 14", part: "zion",
-    title: "Zion Arrival · Friends Join",
+    title: "Zion Arrival · Welcome Dinner",
     subtitle: "Bryce to Zion. The crew comes together.",
     photo: PHOTOS.zionDrive,
     stay: "Open Sky Resort · Zion",
+    badge: "Light day",
     items: [
-      { time: "Morning",  text: "Scenic drive Bryce → Zion (~2 hours)", kind: "drive" },
-      { time: "12:30 PM", text: "Check-in at Open Sky Resort", kind: "stay" },
-      { time: "3:00 PM",  text: "🎉 Friends arrive — the crew is together", kind: "people", highlight: true },
-      { time: "7:00 PM",  text: "Welcome group dinner", kind: "eat" },
+      { time: "Morning",  text: "Drive Bryce → Zion (~2 hours) · Sheldens coming from Bryce", kind: "drive" },
+      { time: "2:00 PM",  text: "Check-in at Open Sky Resort · settle into tents, grab swim gear", kind: "stay" },
+      { time: "3:00 PM",  text: "🎉 Dannheims arrive — the full crew is together", kind: "people", highlight: true },
+      { time: "Late PM",  text: "Optional Upper Plateau walk — ~2 mi on-property · sunset views of West Temple", kind: "hike" },
+      { time: "Evening",  text: "Welcome dinner at Spotted Dog Cafe (or wherever group decides) — Springdale · New American · party of 9", kind: "eat", highlight: true },
+      { time: "After dinner", text: "✦ Stargazing back at Open Sky — dark skies, no city light", kind: "stars" },
+      { time: "Early night", text: "Wind down + early bed — big adventure day ahead", kind: "rest" },
     ],
     audiences: ["family", "zion"],
   },
   {
     n: 4, dow: "Wednesday", date: "July 15", part: "zion",
     title: "E-Bikes + Birthday Dinner",
-    subtitle: "Zion Canyon like a local. Black Sage by night.",
+    subtitle: "Hunter's birthday. Zion Canyon like a local. Black Sage by night.",
     photo: PHOTOS.zionEmerald,
     stay: "Open Sky Resort · Zion",
+    badge: "Big day · Hunter's 50th",
     items: [
-      { time: "9:00 AM",  text: "Zion E-Bike Rental — Rad Runner ×4 · 1101 Zion Park Blvd, Springdale", kind: "ride", highlight: true },
-      { time: "All day",  text: "Skip the shuttle lines — move through the park like a local (rentals until 5 PM)", kind: "ride" },
-      { time: "5:30 PM",  text: "Return bikes · rinse off back at Open Sky", kind: "rest" },
-      { time: "6:00 PM",  text: "🥂 Birthday Dinner at Black Sage — celebrating Hunter's 50th · Virgin, UT", kind: "celebrate", highlight: true },
+      { time: "7:30 AM",  text: "Coffee + light breakfast at resort · hydrate hard · pack day bag, sunscreen", kind: "rest" },
+      { time: "9:00 AM",  text: "Zion E-Bike Rental — Springdale · 1101 Zion Park Blvd · pedal-assist · helmet + lock + water + phone mount included", kind: "ride", highlight: true },
+      { time: "Mid-AM",   text: "Ride into Zion Canyon — Narrows viewpoint, Emerald Pools, Weeping Rock at own pace", kind: "ride" },
+      { time: "12:00 PM", text: "Heat-avoidance lunch in Springdale — Whiptail Grill or Oscar's · avoid the 1–3 PM canyon heat", kind: "eat" },
+      { time: "2–4 PM",   text: "Optional second ride OR Open Sky pool — group choice based on energy", kind: "pool" },
+      { time: "5:00 PM",  text: "Bikes returned · back to resort · shower + change + regroup", kind: "rest" },
+      { time: "6:00 PM",  text: "🥂 BIRTHDAY DINNER at Black Sage — on-property at Open Sky · 9 people · the celebration", kind: "celebrate", highlight: true },
     ],
     audiences: ["family", "zion"],
   },
   {
     n: 5, dow: "Thursday", date: "July 16", part: "zion",
     title: "Canyoneering + Gems of Zion",
-    subtitle: "Rappel in the morning. Petroglyphs by afternoon.",
-    photo: PHOTOS.zionNarrows,
+    subtitle: "Rappel in the morning. Hidden swimming hole by afternoon.",
+    photo: PHOTOS.bryceHoodoos,
     stay: "Open Sky Resort · Zion",
     badge: "Adventure day",
     items: [
-      { time: "7:00 AM",  text: "Half-Day Guided Canyoneering Adventure — Springdale (4 people)", kind: "hike", highlight: true },
-      { time: "11:00 AM", text: "Wrap canyoneering · lunch + recovery", kind: "eat" },
-      { time: "1:30 PM",  text: "Gems of Zion — start at Canyon Overlook Trailhead", kind: "view", highlight: true },
-      { time: "Afternoon",text: "💎 Anasazi Petroglyph Canyon — ~2.5 mi past east entrance, small wooden fence on the left", kind: "view" },
-      { time: "Evening",  text: "Casual group dinner — stories from the canyon", kind: "eat" },
+      { time: "6:30 AM",  text: "Pre-trip prep at resort · quick breakfast · 2–3 L water per person · lunch packed", kind: "rest" },
+      { time: "7:00 AM",  text: "Canyoneering guide pickup at Open Sky · rappels up to 100 ft · gear + instruction included · NON-REFUNDABLE", kind: "hike", highlight: true },
+      { time: "11:30 AM", text: "Return to resort · lunch + pool · recovery break (kids will need it)", kind: "pool" },
+      { time: "1:30 PM",  text: "Gems of Zion — self-guided, east side of park (a menu, not a checklist)", kind: "view", highlight: true },
+      { time: "Afternoon",text: "💎 Canyon Overlook Trail ★ — 2 mi RT · one of the best views in the park", kind: "view" },
+      { time: "Afternoon",text: "💎 Hidden Swimming Hole ★ — through the large tunnel, 2nd switchback · jumping rock + arch · the payoff stop", kind: "view" },
+      { time: "6:30 PM",  text: "Group dinner — Wild Thyme Cafe at Tree's Ranch · ONLINE WAITLIST ONLY · post-hike attire OK", kind: "eat", highlight: true },
+      { time: "Evening",  text: "Back to resort · pack for Vegas · friends depart morning of Day 6", kind: "rest" },
     ],
     audiences: ["family", "zion"],
   },
@@ -85,26 +96,30 @@ const DAYS = [
     stay: "The Cosmopolitan of Las Vegas",
     surprise: true,
     items: [
-      { time: "Morning",  text: "Drive Zion → Vegas (~2.5 hours)", kind: "drive" },
-      { time: "12:30 PM", text: "Stop at The STRAT Tower — thrill rides + decoy 'trip ending' moment", kind: "decoy" },
-      { time: "1:30 PM",  text: "💥 Cosmo arrival — THE SURPRISE", kind: "surprise", highlight: true },
+      { time: "8:30 AM",  text: "Zion checkout · pack the car · final coffee · no rushing", kind: "rest" },
+      { time: "9:00 AM",  text: "Roll out toward Vegas · cover story in motion · ~2.5 hr drive + 15-min gas stop", kind: "drive" },
+      { time: "12:00 PM", text: "Arrive The STRAT Tower — thrill rides · genuine memory, not just a delay", kind: "decoy" },
+      { time: "1:15 PM",  text: "Pull into the Cosmopolitan · valet · friends move to position", kind: "surprise" },
+      { time: "1:25 PM",  text: "💥 ★ THE REVEAL MOMENT ★ — 14 adults + 4 friend-kids appear", kind: "surprise", highlight: true },
+      { time: "1:30 PM",  text: "First hugs · champagne pop · hand him the printed itinerary", kind: "celebrate", highlight: true },
       { time: "3:00 PM",  text: "Pool cabana at the Cosmo (until 6:00 PM)", kind: "pool" },
-      { time: "8:00 PM",  text: "Dinner at Eiffel Tower Restaurant", kind: "eat", highlight: true },
+      { time: "6:00 PM",  text: "Pre-dinner drinks at Eiffel Tower — 11th floor · Strip views at golden hour", kind: "celebrate", highlight: true },
+      { time: "8:00 PM",  text: "Dinner at Mon Ami Gabi — aiming for Le Cabaret semi-private room · Paris Las Vegas", kind: "eat", highlight: true },
     ],
     audiences: ["family", "zion", "vegas"],
   },
   {
     n: 7, dow: "Saturday", date: "July 18", part: "vegas",
-    title: "Brunch · Sphere · Iconic Night",
-    subtitle: "Oz at the Sphere. Odesza after dark.",
+    title: "Brunch · Sphere · AREA15 Night",
+    subtitle: "Oz at the Sphere. Immersive art after dark.",
     photo: PHOTOS.sphere,
     stay: "The Cosmopolitan of Las Vegas",
     items: [
       { time: "11:30 AM", text: "Brunch at The Henry", kind: "eat" },
       { time: "2:00 PM",  text: "Wizard of Oz at The Sphere", kind: "show", highlight: true },
-      { time: "Afternoon",text: "Pool / shopping / AREA15", kind: "pool" },
-      { time: "8:00 PM",  text: "Dinner at Beauty & Essex", kind: "eat" },
-      { time: "11:30 PM", text: "XS Nightclub — Odesza DJ Set", kind: "night", highlight: true },
+      { time: "Afternoon",text: "Pool / shopping / regroup", kind: "pool" },
+      { time: "6:00 PM",  text: "Meet for drinks at the Chandelier Bar — the Cosmopolitan", kind: "celebrate", highlight: true },
+      { time: "8:30 PM",  text: "AREA15 — dinner + immersive experience · the crew move", kind: "night", highlight: true },
     ],
     audiences: ["family", "zion", "vegas"],
   },
@@ -256,7 +271,7 @@ function SurpriseReveal({ day, audience }) {
         </h2>
         <div className="surprise__moment editorial">
           <span className="editorial-italic">1:30 PM</span> ·{" "}
-          The Cosmopolitan
+          Pool Cabana, The Cosmopolitan
         </div>
         <p className="surprise__lede">
           The drive from Zion ends. Hunter thinks he's heading home. He's not.
@@ -265,24 +280,44 @@ function SurpriseReveal({ day, audience }) {
         </p>
         <div className="surprise__beats">
           <div className="surprise__beat">
-            <div className="surprise__beat-time">11:00 AM</div>
-            <div className="surprise__beat-text">Pack out of Zion. Casual. Don't tip the hat.</div>
+            <div className="surprise__beat-time">8:30 AM</div>
+            <div className="surprise__beat-text">Zion checkout. Casual. Don't tip the hat.</div>
           </div>
           <div className="surprise__beat">
-            <div className="surprise__beat-time">12:30 PM</div>
-            <div className="surprise__beat-text">STRAT Tower decoy — "one more thrill before we fly out"</div>
+            <div className="surprise__beat-time">9:00 AM</div>
+            <div className="surprise__beat-text">Roll out toward Vegas — cover story in motion</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">11:30 AM</div>
+            <div className="surprise__beat-text">Text Owen/David: "30 min out" — staging team alerted</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">12:00 PM</div>
+            <div className="surprise__beat-text">STRAT Tower — do the rides, build the memory</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">1:15 PM</div>
+            <div className="surprise__beat-text">Pull into the Cosmo · valet · text Owen: "WE'RE IN"</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">1:20 PM</div>
+            <div className="surprise__beat-text">Drop bags · cover line: "let's grab a poolside drink before the airport"</div>
           </div>
           <div className="surprise__beat surprise__beat--peak">
             <div className="surprise__beat-time">1:30 PM</div>
-            <div className="surprise__beat-text">Pull into the Cosmo. The crew is in the lobby. 💥</div>
+            <div className="surprise__beat-text">★ THE REVEAL ★ at the pool cabana — 14 adults + 4 friend-kids waiting · photographer rolling 💥</div>
+          </div>
+          <div className="surprise__beat">
+            <div className="surprise__beat-time">1:35 PM</div>
+            <div className="surprise__beat-text">First hugs · champagne pop · hand him the itinerary · let it sink in</div>
           </div>
           <div className="surprise__beat">
             <div className="surprise__beat-time">3:00 PM</div>
-            <div className="surprise__beat-text">Pool cabana — give him 90 minutes to absorb it</div>
+            <div className="surprise__beat-text">Pool cabana rolls into the afternoon — until 6 PM</div>
           </div>
           <div className="surprise__beat">
             <div className="surprise__beat-time">8:00 PM</div>
-            <div className="surprise__beat-text">Eiffel Tower Restaurant — the Strip at his feet</div>
+            <div className="surprise__beat-text">Eiffel Tower — drinks + Strip views at golden hour, then Mon Ami Gabi for dinner</div>
           </div>
         </div>
       </div>
