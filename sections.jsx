@@ -553,4 +553,147 @@ function Moments() {
   );
 }
 
-Object.assign(window, { Route, Helicopter, InfoHub, Guests, Reservations, Moments });
+/* =================== SHARE KIT (family-only) =================== */
+function ShareKit() {
+  const [copied, setCopied] = useState(null);
+
+  // Auto-detect base URL so links always match where the site is hosted
+  const baseUrl = (() => {
+    try {
+      const o = window.location.origin;
+      const p = window.location.pathname.replace(/\/(index\.html|Nature%20to%20Neon\.html|Nature to Neon\.html)$/, "/");
+      return o + p;
+    } catch { return "https://lumenpoints.github.io/CHS-5.O-NtoN/"; }
+  })();
+
+  const stripUrl = (u) => u.replace(/^https?:\/\//, "");
+
+  const groups = [
+    {
+      key: "zion",
+      emoji: "🏔",
+      title: "Zion Crew",
+      who: "Sheldens + Dannheims",
+      url: `${baseUrl}?for=zion`,
+      text: `Hunter's 50th is happening July 12–20 and you're a key part of it. 🎉
+
+Here's the trip site — your link lands on the Zion view:
+${baseUrl}?for=zion
+
+📲 Save to home screen so you have it offline in the canyon:
+iPhone: open in Safari → Share → Add to Home Screen
+Android: open in Chrome → ⋮ menu → Install app
+
+Scroll to the Info Hub at the bottom and fill out the RSVP — let us know about the helicopter add-on so we can lock in spots.
+
+🤫 One rule: Hunter cannot know. Don't post, don't tag, don't text him about the trip. Love you all — can't wait.`,
+    },
+    {
+      key: "vegas",
+      emoji: "🎰",
+      title: "Vegas Crew",
+      who: "Jarreau · Kruger · Sheldens TX · Elliott · DeHombre · Erb/Pieczonka",
+      url: `${baseUrl}?for=vegas`,
+      text: `Saving the date one more time — Hunter's surprise 50th in Vegas, Jul 17–20. You're in.
+
+Full plan here, your link drops you on the Vegas view:
+${baseUrl}?for=vegas
+
+📲 Save it to your home screen — opens offline once installed:
+iPhone: Safari → Share → Add to Home Screen
+Android: Chrome → ⋮ → Install app
+
+Scroll to the bottom and RSVP — let me know if you're in for the helicopter ($300), the Sphere (~$175), and AREA15 Saturday so we can confirm spots.
+
+🚨 PHONE DISCIPLINE: From Thursday night Jul 16 onward — no posts, no tags, no "see you in Vegas" texts, nothing on his Find My. The reveal is at the pool cabana Friday at 1:30 PM and we want his face to be priceless.
+
+Can't wait to see you all 💥`,
+    },
+    {
+      key: "family",
+      emoji: "🤐",
+      title: "Inside Team",
+      who: "Owen + David",
+      url: `${baseUrl}?for=family`,
+      text: `Operations doc for the surprise — full master view, including the reveal beat sheet:
+${baseUrl}?for=family
+
+Save to home screen so you have it on you Friday. Scroll to the dedicated "Surprise" section for the minute-by-minute plan from Zion checkout through the 1:30 PM reveal at the pool cabana.
+
+Lmk if anything in there feels off — we'll tighten before the trip.`,
+    },
+  ];
+
+  const copy = async (key, text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 2000);
+    } catch {
+      // Fallback for older browsers
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 2000);
+    }
+  };
+
+  return (
+    <section id="share" className="share">
+      <div className="section__label"><span>Share Kit</span></div>
+      <h2 className="share__title display">Send The Word</h2>
+      <p className="share__lede editorial-italic">
+        Copy-paste-ready texts for each group. Hit copy, paste into iMessage.
+      </p>
+      <div className="share__base">
+        <span className="share__base-label">Base URL · auto-detected:</span>
+        <code className="share__base-url">{stripUrl(baseUrl)}</code>
+      </div>
+
+      <div className="share__cards">
+        {groups.map(g => (
+          <div key={g.key} className="share-card">
+            <div className="share-card__head">
+              <div className="share-card__emoji">{g.emoji}</div>
+              <div>
+                <div className="share-card__title">{g.title}</div>
+                <div className="share-card__who">{g.who}</div>
+              </div>
+            </div>
+            <div className="share-card__url">
+              <span className="share-card__url-label">Their link:</span>
+              <a href={g.url} target="_blank" rel="noopener noreferrer">
+                {stripUrl(g.url)}
+              </a>
+            </div>
+            <pre className="share-card__text">{g.text}</pre>
+            <div className="share-card__actions">
+              <button type="button" className="share-card__copy"
+                      onClick={() => copy(g.key, g.text)}>
+                {copied === g.key ? "✓ Copied!" : "Copy text"}
+              </button>
+              <button type="button" className="share-card__copy share-card__copy--alt"
+                      onClick={() => copy(g.key + "-url", g.url)}>
+                {copied === g.key + "-url" ? "✓ Copied!" : "Copy link only"}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="share__strategy">
+        <h3 className="share__strategy-title">Sending strategy</h3>
+        <ol className="share__strategy-list">
+          <li><strong>Vegas crew first (~Jun)</strong> — they need lead time for flights + helicopter/Sphere RSVPs.</li>
+          <li><strong>Zion crew ~3 weeks out</strong> — they're already booked, this just gives them the goods.</li>
+          <li><strong>Owen + David anytime</strong> — they're operations, they want early eyes.</li>
+          <li><strong>Don't blast all three at once</strong> — leave breathing room for questions.</li>
+          <li><strong>Group thread for Vegas crew</strong> works (small enough, helps coordinate Friday positioning). Zion crew = separate threads per family.</li>
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Route, Helicopter, InfoHub, Guests, Reservations, Moments, ShareKit });

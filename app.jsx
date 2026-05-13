@@ -1,8 +1,18 @@
-/* global React, ReactDOM, SurpriseBanner, Nav, Hero, Countdown, Route, Journey, Helicopter, InfoHub, Reservations, Moments, AUDIENCES */
+/* global React, ReactDOM, SurpriseBanner, Nav, Hero, Countdown, Route, Journey, Helicopter, InfoHub, Reservations, Moments, ShareKit, AUDIENCES */
 const { useState, useEffect } = React;
 
 function App() {
+  // Audience priority: URL param (?for=zion) > saved choice > default
+  const urlAudience = (() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get("for");
+      if (p && AUDIENCES[p.toLowerCase()]) return p.toLowerCase();
+    } catch {}
+    return null;
+  })();
+
   const [audience, setAudience] = useState(() => {
+    if (urlAudience) return urlAudience;
     try { return localStorage.getItem("n2n-audience") || "family"; }
     catch { return "family"; }
   });
@@ -48,6 +58,7 @@ function App() {
         <InfoHub audience={audience} />
         <Reservations audience={audience} />
         <Moments />
+        {audience === "family" && <ShareKit />}
         <footer className="footer">
           <div className="footer__mark">Nature → Neon</div>
           <div className="footer__line">Hunter · 5.0 · July 12 – 20, 2026</div>
